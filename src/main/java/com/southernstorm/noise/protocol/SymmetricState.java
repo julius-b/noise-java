@@ -183,15 +183,6 @@ public class SymmetricState implements Destroyable {
      *                         to place the ciphertext and the MAC tag.
      * @param length           The length of the plaintext.
      * @return The length of the ciphertext plus the MAC tag.
-     * @throws ShortBufferException There is not enough space in the
-     *                              ciphertext buffer for the encrypted data plus MAC value.
-     *                              <p>
-     *                              The plaintext and ciphertext buffers can be the same for in-place
-     *                              encryption.  In that case, plaintextOffset must be identical to
-     *                              ciphertextOffset.
-     *                              <p>
-     *                              There must be enough space in the ciphertext buffer to accomodate
-     *                              length + getMACLength() bytes of data starting at ciphertextOffset.
      */
     public int encryptAndHash(byte[] plaintext, int plaintextOffset, byte[] ciphertext, int ciphertextOffset, int length) throws ShortBufferException {
         int ciphertextLength = cipher.encryptWithAd(h, plaintext, plaintextOffset, ciphertext, ciphertextOffset, length);
