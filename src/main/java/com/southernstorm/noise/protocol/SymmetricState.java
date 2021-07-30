@@ -193,7 +193,7 @@ public class SymmetricState implements Destroyable {
 	 * @param length The length of the plaintext.
 	 * @return The length of the ciphertext plus the MAC tag.
 	 * 
-	 * @throws ShortBufferException\ There is not enough space in the
+	 * @throws ShortBufferException There is not enough space in the
 	 * ciphertext buffer for the encrypted data plus MAC value.
 	 * 
 	 * The plaintext and ciphertext buffers can be the same for in-place
