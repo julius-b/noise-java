@@ -34,14 +34,13 @@ import javax.crypto.ShortBufferException;
 /**
  * Symmetric state for helping manage a Noise handshake.
  */
-class SymmetricState implements Destroyable {
-	
-	private String name;
-	private CipherState cipher;
-	private MessageDigest hash;
-	private byte[] ck;
-	private byte[] h;
-	private byte[] prev_h;
+public class SymmetricState implements Destroyable {
+	protected final String name;
+	protected CipherState cipher;
+	protected MessageDigest hash;
+	protected byte[] ck;
+	protected byte[] h;
+	protected byte[] prev_h;
 
 	/**
 	 * Constructs a new symmetric state object.
@@ -194,7 +193,7 @@ class SymmetricState implements Destroyable {
 	 * @param length The length of the plaintext.
 	 * @return The length of the ciphertext plus the MAC tag.
 	 * 
-	 * @throws ShortBufferException There is not enough space in the
+	 * @throws ShortBufferException\ There is not enough space in the
 	 * ciphertext buffer for the encrypted data plus MAC value.
 	 * 
 	 * The plaintext and ciphertext buffers can be the same for in-place
@@ -207,10 +206,6 @@ class SymmetricState implements Destroyable {
 	public int encryptAndHash(byte[] plaintext, int plaintextOffset, byte[] ciphertext, int ciphertextOffset, int length) throws ShortBufferException
 	{
 		int ciphertextLength = cipher.encryptWithAd(h, plaintext, plaintextOffset, ciphertext, ciphertextOffset, length);
-		if(!cipher.hasKey()){
-			return ciphertextLength;
-		}
-
 		mixHash(ciphertext, ciphertextOffset, ciphertextLength);
 		return ciphertextLength;
 	}
