@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>noise-java</artifactId>
     <groupId>com.github.auties00</groupId> <!-- Maven central requires to own the domain  -->
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Plain Java implementation of the Noise protocol</description>
     <url>https://github.com/Auties00/noise-java</url>
@@ -22,7 +22,7 @@
     <scm>
         <url>https://github.com/Auties00/noise-java/tree/master</url>
         <connection>scm:git:https://github.com/Auties00/noise-java.git</connection>
-        <tag>noise-java-1.0</tag>
+        <tag>noise-java-1.2</tag>
     </scm>
     <distributionManagement>
         <snapshotRepository>
