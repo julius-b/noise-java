@@ -49,6 +49,7 @@ public class HandshakeState implements Destroyable {
     private int patternIndex;
     private byte[] preSharedKey;
     private byte[] prologue;
+    boolean emptyPayloadAsNone = false;
 
     /**
      * Enumerated value that indicates that the handshake object
@@ -847,7 +848,9 @@ public class HandshakeState implements Destroyable {
                         len = localEphemeral.getPublicKeyLength();
                         if (space < len)
                             throw new ShortBufferException();
+                        // write local ephemeral key to message at 0
                         localEphemeral.getPublicKey(message, messagePosn);
+                        // mix local ephemeral key into hash
                         symmetric.mixHash(message, messagePosn, len);
 
                         // If the protocol is using pre-shared keys, then also mix
@@ -948,7 +951,8 @@ public class HandshakeState implements Destroyable {
             // Add the payload to the message buffer and encrypt it.
             if (payload != null)
                 messagePosn += symmetric.encryptAndHash(payload, payloadOffset, message, messagePosn, payloadLength);
-            else
+            // don't add auth_tag (length = 0, only auth tag would be submitted)
+            else if (!emptyPayloadAsNone)
                 messagePosn += symmetric.encryptAndHash(message, messagePosn, message, messagePosn, 0);
             success = true;
         } finally {
@@ -1132,9 +1136,13 @@ public class HandshakeState implements Destroyable {
             }
 
             // Decrypt the message payload.
-            int payloadLength = symmetric.decryptAndHash(message, messageOffset, payload, payloadOffset, messageEnd - messageOffset);
-            success = true;
-            return payloadLength;
+            if (payload.length == 0 && emptyPayloadAsNone) {
+                return 0;
+            } else {
+                int payloadLength = symmetric.decryptAndHash(message, messageOffset, payload, payloadOffset, messageEnd - messageOffset);
+                success = true;
+                return payloadLength;
+            }
         } finally {
             // If we failed, then clear any sensitive data that may have
             // already been written to the payload buffer.
