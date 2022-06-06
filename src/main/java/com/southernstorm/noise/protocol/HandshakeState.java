@@ -1137,6 +1137,7 @@ public class HandshakeState implements Destroyable {
 
             // Decrypt the message payload.
             if (payload.length == 0 && emptyPayloadAsNone) {
+                success = true;
                 return 0;
             } else {
                 int payloadLength = symmetric.decryptAndHash(message, messageOffset, payload, payloadOffset, messageEnd - messageOffset);
