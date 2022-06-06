@@ -29,11 +29,6 @@ import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 
-import com.southernstorm.noise.crypto.Blake2bMessageDigest;
-import com.southernstorm.noise.crypto.Blake2sMessageDigest;
-import com.southernstorm.noise.crypto.SHA256MessageDigest;
-import com.southernstorm.noise.crypto.SHA512MessageDigest;
-
 /**
  * Utility functions for the Noise protocol library.
  */
@@ -145,42 +140,18 @@ public final class Noise {
 		// The only algorithm that is required to be implemented by a
 		// JDK is "SHA-256", although "SHA-512" is fairly common as well.
 		if (name.equals("SHA256")) {
-			if (forceFallbacks)
-				return new SHA256MessageDigest();
-			try {
-				return MessageDigest.getInstance("SHA-256");
-			} catch (NoSuchAlgorithmException e) {
-				return new SHA256MessageDigest();
-			}
+			return MessageDigest.getInstance("SHA-256");
 		} else if (name.equals("SHA512")) {
-			if (forceFallbacks)
-				return new SHA512MessageDigest();
-			try {
-				return MessageDigest.getInstance("SHA-512");
-			} catch (NoSuchAlgorithmException e) {
-				return new SHA512MessageDigest();
-			}
+			return MessageDigest.getInstance("SHA-512");
 		} else if (name.equals("BLAKE2b")) {
 			// Bouncy Castle registers the BLAKE2b variant we
 			// want under the name "BLAKE2B-512".
-			if (forceFallbacks)
-				return new Blake2bMessageDigest();
-			try {
-				return MessageDigest.getInstance("BLAKE2B-512");
-			} catch (NoSuchAlgorithmException e) {
-				return new Blake2bMessageDigest();
-			}
+			return MessageDigest.getInstance("BLAKE2B-512");
 		} else if (name.equals("BLAKE2s")) {
 			// Bouncy Castle doesn't currently (June 2016) have an
 			// implementation of BLAKE2s, but look for the most
 			// obvious provider name in case one is added in the future.
-			if (forceFallbacks)
-				return new Blake2sMessageDigest();
-			try {
-				return MessageDigest.getInstance("BLAKE2S-256");
-			} catch (NoSuchAlgorithmException e) {
-				return new Blake2sMessageDigest();
-			}
+			return MessageDigest.getInstance("BLAKE2S-256");
 		}
 		throw new NoSuchAlgorithmException("Unknown Noise hash algorithm name: " + name);
 	}
