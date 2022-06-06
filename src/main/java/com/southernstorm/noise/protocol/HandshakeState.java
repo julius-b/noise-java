@@ -49,7 +49,7 @@ public class HandshakeState implements Destroyable {
     private int patternIndex;
     private byte[] preSharedKey;
     private byte[] prologue;
-    boolean emptyPayloadAsNone = false;
+    private boolean emptyPayloadAsNone = false;
 
     /**
      * Enumerated value that indicates that the handshake object
@@ -1272,5 +1272,13 @@ public class HandshakeState implements Destroyable {
             requirements |= PSK_REQUIRED;
         }
         return requirements;
+    }
+
+    public void setEmptyPayloadAsNone(boolean emptyPayloadAsNone) {
+        this.emptyPayloadAsNone = emptyPayloadAsNone;
+    }
+
+    public boolean getEmptyPayloadAsNone() {
+        return this.emptyPayloadAsNone;
     }
 }
